@@ -20,7 +20,8 @@ class SpeedCalculator(QWidget):
         self.system_dropdown.addItems(['Metric(km)', 'Imperial(miles)'])
 
         calculate_button = QPushButton('Calculate')
-        self.output_label = QLabel()
+        calculate_button.clicked.connect(self.calculate_speed)
+        self.output_label = QLabel('')
 
         # Add widgets to grid
         grid.addWidget(distance_label, 0, 0)
@@ -32,6 +33,19 @@ class SpeedCalculator(QWidget):
         grid.addWidget(self.output_label, 3, 0, 1, 2)  
 
         self.setLayout(grid)
+
+    def calculate_speed(self):
+        if self.system_dropdown.currentText() == 'Metric(km)':
+            converter = 1
+            unit_label = 'km'
+        else :
+            converter = 1.609
+            unit_label = 'mil'
+
+        speed = (int(self.distance_line_input.text()) / int(self.time_line_input.text()))/converter
+        
+        self.output_label.setText(f"Your speed is : {speed} {unit_label}")
+    
 
 
 app = QApplication(sys.argv)
