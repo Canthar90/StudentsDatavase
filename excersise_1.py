@@ -37,10 +37,10 @@ class SpeedCalculator(QWidget):
     def calculate_speed(self):
         if self.system_dropdown.currentText() == 'Metric(km)':
             converter = 1
-            unit_label = 'km'
+            unit_label = 'km/h'
         else :
             converter = 1.609
-            unit_label = 'mil'
+            unit_label = 'mph'
 
         speed = (int(self.distance_line_input.text()) / int(self.time_line_input.text()))/converter
         
