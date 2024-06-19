@@ -13,6 +13,7 @@ class MainWindow(QMainWindow):
         # Adding menu bar
         file_menu_item = self.menuBar().addMenu('&File')
         help_menu_item = self.menuBar().addMenu('&Help')
+        edit_menu_item = self.menuBar().addMenu('&Edit')
 
         # Adding actions for menu items
         add_student_action = QAction('Add Student', self)
@@ -22,6 +23,11 @@ class MainWindow(QMainWindow):
         about_action = QAction('About', self)
         help_menu_item.addAction(about_action)
         about_action.setMenuRole(QAction.MenuRole.NoRole)
+
+
+        search_action = QAction('Search', self)
+        edit_menu_item.addAction(search_action)
+        search_action.triggered.connect(self.search)
 
         # Creating table
         self.table = QTableWidget()
@@ -45,6 +51,11 @@ class MainWindow(QMainWindow):
     def insert(self):
         dialog = InsertDialog()
         dialog.exec()
+
+    
+    def search(self):
+        pass
+        search = SearchDialog()
         
 
 
@@ -94,6 +105,12 @@ class InsertDialog(QDialog):
        connect.close()
        student_managment_main.load_data()
     
+
+class SearchDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Search for the student")
+
 
 app = QApplication(sys.argv)
 student_managment_main = MainWindow()
