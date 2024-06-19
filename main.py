@@ -142,6 +142,9 @@ class SearchDialog(QDialog):
             # print(item)
             student_managment_main.table.item(item.row(), 1).setSelected(True)
 
+        cursor.close()
+        connection.close()
+
 
 app = QApplication(sys.argv)
 student_managment_main = MainWindow()
