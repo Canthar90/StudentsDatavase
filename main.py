@@ -54,8 +54,8 @@ class MainWindow(QMainWindow):
 
     
     def search(self):
-        pass
         search = SearchDialog()
+        search.exec()
         
 
 
@@ -110,6 +110,26 @@ class SearchDialog(QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Search for the student")
+        self.setFixedHeight(200)
+        self.setFixedWidth(200)
+
+        layout = QVBoxLayout()
+
+        # Name input
+        search_name = QLineEdit()
+        search_name.setPlaceholderText('Name')
+        layout.addWidget(search_name)
+
+        # search button
+        search = QPushButton("Search")
+        search.clicked.connect(self.search_student)
+        layout.addWidget(search)
+
+
+        self.setLayout(layout)
+
+    def search_student(self):
+        print("here searchig code XD")
 
 
 app = QApplication(sys.argv)
