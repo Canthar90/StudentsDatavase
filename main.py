@@ -1,3 +1,4 @@
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QVBoxLayout, QLabel, QWidget, QGridLayout, QLineEdit, QPushButton, QMainWindow, \
     QTableWidget, QTableWidgetItem, QDialog, QComboBox
 from PyQt6.QtGui import QAction
@@ -24,10 +25,10 @@ class MainWindow(QMainWindow):
         help_menu_item.addAction(about_action)
         about_action.setMenuRole(QAction.MenuRole.NoRole)
 
-
         search_action = QAction('Search', self)
         edit_menu_item.addAction(search_action)
         search_action.triggered.connect(self.search)
+
 
         # Creating table
         self.table = QTableWidget()
@@ -116,9 +117,9 @@ class SearchDialog(QDialog):
         layout = QVBoxLayout()
 
         # Name input
-        search_name = QLineEdit()
-        search_name.setPlaceholderText('Name')
-        layout.addWidget(search_name)
+        self.search_name = QLineEdit()
+        self.search_name.setPlaceholderText('Name')
+        layout.addWidget(self.search_name)
 
         # search button
         search = QPushButton("Search")
@@ -129,7 +130,17 @@ class SearchDialog(QDialog):
         self.setLayout(layout)
 
     def search_student(self):
-        print("here searchig code XD")
+        name = self.search_name.text()
+        connection = sqlite3.connect('database.db')
+        cursor = connection.cursor()
+        result = cursor.execute('SELECT * FROM students WHERE name = ?', (name,))
+        rows = list(result)
+        # print(rows)
+        items = student_managment_main.table.findItems(name, 
+                                    Qt.MatchFlag.MatchFixedString)
+        for item in items:
+            # print(item)
+            student_managment_main.table.item(item.row(), 1).setSelected(True)
 
 
 app = QApplication(sys.argv)
