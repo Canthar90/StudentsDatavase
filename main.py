@@ -104,11 +104,43 @@ class MainWindow(QMainWindow):
 class EditDialog(QDialog):
     def __init__(self):
         super().__init__()
+        self.setWindowTitle("Edit record")
+        self.setFixedWidth(300)
+        self.setFixedHeight(300)
+
+        layout = QVBoxLayout()
+
+        # Change student name
+        self.student_name = QLineEdit()
+        self.student_name.setPlaceholderText("Name")
+        layout.addWidget(self.student_name)
+
+        # Combobox of available courses
+        self.course_name = QComboBox()
+        courses = ["Biology", "Mah", "Astronomy", "Physics"]
+        self.course_name.addItems(courses)
+        layout.addWidget(self.course_name)
+
+        # Add Mobile
+        self.mobile_number = QLineEdit()
+        self.mobile_number.setPlaceholderText("Mobile-nr")
+        layout.addWidget(self.mobile_number)
+
+        # Submit button
+        submit = QPushButton("Submit")
+        submit.clicked.connect(self.change_student_record)
+        layout.addWidget(submit)
+
+        self.setLayout(layout)
+
+
+    def change_student_record(self):
         pass
 
 
 class DeleteDialog(QDialog):
-    pass
+    def __init__(self):
+        super().__init__()
 
 
 class InsertDialog(QDialog):
@@ -127,7 +159,7 @@ class InsertDialog(QDialog):
         
         # Combobox of courses
         self.course_name = QComboBox()
-        courses = ["Bioloty", "Mah", "Astronomy", "Physics"]
+        courses = ["Biology", "Mah", "Astronomy", "Physics"]
         self.course_name.addItems(courses)
         layout.addWidget(self.course_name)
 
