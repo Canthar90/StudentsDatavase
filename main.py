@@ -1,10 +1,19 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QApplication, QVBoxLayout, QLabel, QWidget, QGridLayout, QLineEdit, QPushButton, QMainWindow, \
+from PyQt6.QtWidgets import QApplication, QVBoxLayout, QLabel, QGridLayout, QLineEdit, QPushButton, QMainWindow, \
     QTableWidget, QTableWidgetItem, QDialog, QComboBox, QToolBar, QStatusBar, QMessageBox
 from PyQt6.QtGui import QAction, QIcon
 import sys
 import sqlite3
 
+
+class DatabaseConnection:
+    def __init__(self, database_file="database.db"):
+        self.database_file = database_file
+
+    def connect(self):
+        connection = sqlite3.connect(self.database_file)
+        return connection
+    
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -73,7 +82,7 @@ class MainWindow(QMainWindow):
 
     
     def load_data(self):
-        connection = sqlite3.connect('database.db')
+        connection = DatabaseConnection().connect()
         result = connection.execute('SELECT * FROM students')
         self.table.setRowCount(0)
         for row_number, row_data in enumerate(result):
@@ -162,7 +171,7 @@ class EditDialog(QDialog):
 
 
     def update_student_record(self):
-        connection = sqlite3.connect('database.db')
+        connection = DatabaseConnection().connect()
         cursor = connection.cursor()
         cursor.execute("UPDATE students SET name = ?, course = ?, mobile = ? WHERE id = ?",
                 (self.student_name.text(), 
@@ -201,7 +210,7 @@ class DeleteDialog(QDialog):
     def delete_student(self):
         index = student_managment_main.table.currentRow()
         student_id = student_managment_main.table.item(index, 0).text()
-        connection = sqlite3.connect('database.db')
+        connection = DatabaseConnection().connect()
         cursor = connection.cursor()
 
         cursor.execute("DELETE from students WHERE id = ?", (student_id,))
@@ -293,7 +302,7 @@ class SearchDialog(QDialog):
 
     def search_student(self):
         name = self.search_name.text()
-        connection = sqlite3.connect('database.db')
+        connection = DatabaseConnection().connect()
         cursor = connection.cursor()
         result = cursor.execute('SELECT * FROM students WHERE name = ?', (name,))
         rows = list(result)
